@@ -59,7 +59,7 @@ class APIController {
     
     func logIn(with username: String, password: String, completion: @escaping (Error?) -> Void ) {
         
-        let requestURL = baseURL.appendingPathComponent("users").appendingPathComponent("loginup")
+        let requestURL = baseURL.appendingPathComponent("users").appendingPathComponent("login")
         
         var request = URLRequest(url: requestURL)
         
@@ -119,6 +119,69 @@ class APIController {
             }
         }
         dataTask.resume()
+    }
+    
+    func getAllAnimalNames(completion: @escaping (Result<[String], NetworkError>) -> Void) {
+        
+        guard let bearer = bearer else {
+            NSLog("No bearer token available")
+            completion(.failure(.noBearer))
+            return
+        }
+        
+        let requestURL = baseURL
+            .appendingPathComponent("animals")
+            .appendingPathComponent("all")
+        
+        var request = URLRequest(url: requestURL)
+        
+        // If the method is GET, there is no body.
+        request.httpMethod = HTTPMethod.get.rawValue
+        
+        // This is out method of authenticating with the API.
+        request.addValue("Bearer \(bearer.token)", forHTTPHeaderField: "Authorization")
+        
+        let dataTask = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            
+            if let response = response as? HTTPURLResponse,
+                response.statusCode == 401 {
+                completion(.failure(.badAuth))
+                return
+            }
+            
+            if let error = error {
+                NSLog("Error getting animal names: \(error)")
+                completion(.failure(.apiError))
+                return
+            }
+            
+            guard let data = data else {
+                completion(.failure(.noDataReturned))
+                return
+            }
+            
+            let jsonDecoder = JSONDecoder()
+            
+            do {
+                
+                let animalNames = try jsonDecoder.decode([String].self, from: data)
+                completion(.success(animalNames))
+    
+            } catch {
+                NSLog("Error decoding animal names: \(error)")
+                completion(.failure(.noDecode))
+            }
+            
+        }
+        dataTask.resume()
+    }
+    
+    enum NetworkError: Error {
+        case noDataReturned
+        case noBearer
+        case badAuth
+        case apiError
+        case noDecode
     }
     
     enum HTTPMethod: String {

@@ -28,7 +28,7 @@
                                             <segment title="Sign In"/>
                                         </segments>
                                         <connections>
-                                            <action selector="signInTypeChanged:" destination="fYv-hU-wkc" eventType="valueChanged" id="vNy-VT-mg1"/>
+                                            <action selector="signInTypeChanged:" destination="fYv-hU-wkc" eventType="valueChanged" id="eTh-bP-nhv"/>
                                         </connections>
                                     </segmentedControl>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qpz-u1-zcQ">
@@ -51,7 +51,7 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                         <state key="normal" title="Sign Up"/>
                                         <connections>
-                                            <action selector="buttonTapped:" destination="fYv-hU-wkc" eventType="touchUpInside" id="AyH-nr-GNG"/>
+                                            <action selector="authenticate:" destination="fYv-hU-wkc" eventType="touchUpInside" id="toJ-mI-rAS"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -124,7 +124,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <segue destination="fYv-hU-wkc" kind="presentation" identifier="ShowSignUp" id="Ay8-XG-ltl"/>
+                        <segue destination="fYv-hU-wkc" kind="presentation" identifier="LoginViewModalSegue" id="Ay8-XG-ltl"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KAK-9d-Sq1" userLabel="First Responder" sceneMemberID="firstResponder"/>
